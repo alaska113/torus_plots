@@ -137,15 +137,18 @@ for day = specified_day
         
         
         TeXString_90 = texlabel('90');
-        text((5*cos(pi/2))-0.5,(5*sin(pi/2)),TeXString_90);
+        a90 = text((5*cos(pi/2))-0.5,(5*sin(pi/2)),TeXString_90);
+        a90.FontSize = 20;
         
         TeXString_180 = texlabel('180');
-        text((5*cos(pi)),(5*sin(pi)),TeXString_180);
+        a180 = text((5*cos(pi)),(5*sin(pi)),TeXString_180);
+        a180.FontSize = 30;
         
         TeXString_270 = texlabel('270');
-        text((5*cos((3*pi)/2))-0.7,(5*sin((3*pi)/2)),TeXString_270);
+        y = text((5*cos((3*pi)/2))-0.7,(5*sin((3*pi)/2)),TeXString_270);
         species_array = {'sp','s2p','s3p','op','o2p','elec'};
         species_rename_array = {'S+','S++','S+++','O+','O++','electron'};
+        y.FontSize = 30;
         %for s =1:6
         %   species_i = char(species_array(s));
         %  species_i
@@ -163,7 +166,7 @@ for day = specified_day
         
         TeXString_species = texlabel(species);
         h=text(-10,-9.5,TeXString_species);
-        h.FontSize = 20;
+        h.FontSize = 100;
         
         %if property == 'INTS'
         %    property = 'Intensity';
@@ -184,7 +187,7 @@ for day = specified_day
         
         TeXString_property = texlabel(property);
         p=text(5,-9.5,TeXString_property);
-        p.FontSize = 20;
+        p.FontSize = 30;
         
         %line = [min(radius):((max(radius))-(min(radius)))/rad:max(radius), 0];
         linetheta = 0;
