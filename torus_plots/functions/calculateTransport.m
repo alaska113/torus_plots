@@ -1,10 +1,10 @@
-function [rad_velocity, vaz_vel] = calculateTransport(nl2, r, file, rad, lng)
+function [rad_velocity, vaz_vel] = calculateTransport(nl2, r, strtpath, rad, lng)
 RJ = 71492; %Radius of Jupiter in km
-inputsdata = importdata(strcat('/Users/khan113/Documents/', file, '/2D_Model-master/inputs.dat'));
-dllos = char(inputsdata(9,1));
-dllas = char(inputsdata(10,1));
-dllo = str2num(dllos(1:6));
-dlla = str2num(dllas(1:3));
+inputsdata = importdata(strcat(strtpath,'/inputs.dat')); %Opens parameter file
+dllos = char(inputsdata(9,1)); %Selects line of Dll parameter
+dllas = char(inputsdata(10,1));%Selects line of Dll exponent parameter
+dllo = str2num(dllos(1:6));%Saves Parameter value
+dlla = str2num(dllas(1:3));%Saves Parameter values
 for j = 2:rad
     for i = 1:lng+1
         vaz_vel(i,j) = -3.0 + abs(r(i,1,j)-6.8);

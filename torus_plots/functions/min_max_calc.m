@@ -1,11 +1,8 @@
 function [ min_value, max_value ] = min_max_calc(specified_day,lng,rad,folder)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+
 for day = specified_day
-        %disp(strcat('Day', '-', num2str(day), ' plotted'));
         c = -lng;
         v = 0;
-        
         data = load(folder(day).name);
         for bin = 1:rad;
             c = c + lng + 1;

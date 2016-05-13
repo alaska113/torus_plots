@@ -1,11 +1,8 @@
-function [folder,nl2folder] = folders(file,property,species)
-strtpath = strcat('/Users/khan113/36x24r/',file, '/2D_Model-master/plots/data');
-addpath('/Users/khan113/Documents/MATLAB/torus_plots/functions/');
-addpath(strcat('/Users/khan113/36x24r/',file, '/2D_Model-master/plots/data'));
-addpath(strcat(strtpath,'/', species, '/', property));
-addpath(strcat(strtpath,'/','elec','/', 'NL2_/'));
-folder = dir(strcat(strtpath,'/', species, '/', property, '/', property, species, '*_3D.dat'));
-addpath(strcat(strtpath, 'elec','/', 'NL2_','/'));
-nl2folder = dir(strcat(strtpath,'/', 'elec','/', 'NL2_','/', '*_3D.dat'));
+function [folder,nl2folder] = folders(property,species,strtpath,f_path)
+
+addpath(genpath(f_path));   %Your saved torus_plots function location
+addpath(genpath(strtpath));
+folder = dir(strcat(strtpath,'/plots/data/', species, '/', property, '/', property, species, '*_3D.dat'));  %Selects current file in model data.
+nl2folder = dir(strcat(strtpath,'/plots/data/', 'elec','/', 'NL2_','/', '*_3D.dat'));   %Selects current flux tube content data for transport calculation.
 end
 

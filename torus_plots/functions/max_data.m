@@ -1,14 +1,14 @@
 function [ radial_max_data,nl2current,nl2currentradius ] = max_data(data,nl2data,rad,lng,vec_on)
 v = -lng;%Initilizer for index counting
-        b = 0;%Initilizer for index counting
+b = 0;%Initilizer for index counting
 for i = 1:rad;
     v = v + lng + 1; %Index counting
     b = b + lng + 1; %Index counting
     radial_bin = data(v:b,:); %Selects current radial bin
     
     
-        nl2current(:,1,i) = nl2data(v:b,2); %Selects current nl2 values in radial bin
-        nl2currentradius(:,1,i) = nl2data(v:b,3); %Selects current nl2 radius in radial bin
+    nl2current(:,1,i) = nl2data(v:b,2); %Selects current nl2 values in radial bin
+    nl2currentradius(:,1,i) = nl2data(v:b,3); %Selects current nl2 radius in radial bin
     
     first = radial_bin(1,2);
     last = radial_bin(9,2);

@@ -1,0 +1,34 @@
+Torus Plots is a function written for visualizing data produced by the Io Plasma Torus 2D physical chemistry model.
+
+That model can be found here:https://github.com/mrcopper/2D_Model
+
+There are two different plots you can make with this function:
+
+1) A set of line plots of property value (Density, Temperature, etc.) vs. Azimuthal position at different raial positions
+(This plot can be made by setting argument "type" to 'plt').
+
+2) A color map plot property values at both radial and azimuthal position.
+("" "" argument "type" to 'map')
+
+!!!!Be sure to set both the path to the model and this folder to where you've put them... unless you're me.!!!!
+
+
+Argument "vec_on" can be set to either 0 or 1. This will add a vector field to the color map plot. (Needs some working on)
+
+Arguement "n" reperesents normalization of property values. Can be switched to either 0 or 1.
+
+Arguement "species" must be written as a string ('sp','op','s3p', etc.)
+
+Arguement "property" must be written as a string, here are the properties:
+
+DENS	  Density
+TEMP	  Temperature
+INTS	  Intensity
+MIXR	  Hot Electron Mixing Ratio
+NL2_	  Flux Tube Content
+
+Arguement "specified_day" can select a specific day (Day 1 = 1) or a set of days (Days 1 through 50 = 1:50).
+
+Function will output onscreen plots, an onscreen slider plot, and will save both an AVI of the selected run and jpg files for each frame(Day). The video and .jpg files will be saved in your model folder as an "output_plots" directory.
+
+All funtions for torus_plots can be found in the functions folder. 
