@@ -3,6 +3,7 @@ function [ min_value, max_value ] = min_max_calc(specified_day,lng,rad,folder)
 for day = specified_day
         c = -lng;
         v = 0;
+        folder
         data = load(folder(day).name);
         for bin = 1:rad;
             c = c + lng + 1;

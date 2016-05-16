@@ -11,7 +11,7 @@ for i = 1:rad;
     nl2currentradius(:,1,i) = nl2data(v:b,3); %Selects current nl2 radius in radial bin
     
     first = radial_bin(1,2);
-    last = radial_bin(9,2);
+    last = radial_bin(lng+1,2);
     
     radial_max_n = max(radial_bin(1:lng-1,2));
     radial_min_n = min(radial_bin(1:lng-1,2));

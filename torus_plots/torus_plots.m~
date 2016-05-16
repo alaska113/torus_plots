@@ -7,37 +7,36 @@ hFig = figure; %Opens blank Figure
 
 
 %%%%%%%%%%%ENTER PATH TO THE 2D MODEL FOLDER HERE%%%%%%%%%%%%%%%%
-strtpath = '/Users/khan113/36x24r/c1/2D_Model-master/';  %Your saved 2D_Model-master location
+strtpath = '/Users/khan113/Documents/24x36_runs/c1/2D_Model-master';  %Your saved 2D_Model-master location
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%ENTER PATH TO THIS TORUS PLOTS FOLDER HERE%%%%%%%%%%%%
-f_path = '/Users/khan113/Documents/MATLAB/torus_plots/functions/';  %Your saved torus_plots location
+f_path = '/Users/khan113/Documents/MATLAB/t_p_clone/torus_plots/torus_plots/functions/';  %Your saved torus_plots location
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
+addpath(genpath(f_path)); %Adds a path to all functions used for plotting
+addpath(genpath(strtpath));
+[folder,nl2folder] = folders(property,species,strtpath,f_path); %Adds all nessicary paths and folder locations
 species_save = species; %Saves species arguement
 property_save = property; %Saves property arguement
 
 
 %SIZE OF MODEL RUN
-lng = 36; %Number of longitudinal bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
-rad = 24; %Number of radial bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
-
+%  lng = 36; %Number of longitudinal bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
+%  rad = 24; %Number of radial bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
+[lng,rad] = FindDimensions(strtpath);
 
 
 %Added Paths
-addpath(genpath(f_path)); %Adds a path to all functions used for plotting
-[folder,nl2folder] = folders(property,species,strtpath,f_path); %Adds all nessicary paths and folder locations
-[min_value, max_value] = min_max_calc(specified_day,lng,rad,folder); %Calculates minimum and maximum values of data
+
+
+%[min_value, max_value] = min_max_calc(specified_day,lng,rad,folder); %Calculates minimum and maximum values of data
 
 
 %Creates Directories for output plots
-mkdir(strcat(strtpath,'../ouput_plots'));
-mkdir(strcat(strtpath,'../output_plots/images'))
-mkdir(strcat(strtpath,'../output_plots/images/',species,'_',property))
-mkdir(strcat(strtpath,'../output_plots/videos'));
+mkdir(strcat(strtpath,'/../output_plots'));
+mkdir(strcat(strtpath,'/../output_plots/images'))
+mkdir(strcat(strtpath,'/../output_plots/images/',species,'_',property))
+mkdir(strcat(strtpath,'/../output_plots/videos'));
 
 
 %AVI Writing Stuff
@@ -74,10 +73,11 @@ for day = specified_day
     else
         species = species_save; %Grabs saved species
         property = property_save; %Grabs saved property
-        
+        %s3pfile = dir(strcat(strtpath,'/plots/data/s3p/', property, '/', property, 's3p', '*_3D.dat'));
         data = load(folder(day).name); %Loads current data file according to day
-        
+        %data2 = load(s3pfile(day).name);
         if n == 'norm'
+            %[norm_values] = normalize_values(data,data2,lng,rad); %Normalizes values on 0-1 scaleing
             [norm_values] = normalize_values(data,lng,rad); %Normalizes values on 0-1 scaleing
             value = norm_values; %Sets to normalized values
         else
@@ -134,10 +134,10 @@ for day = specified_day
         hold on
         
         
-        h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
-        ...maximum value in each radial bin
-            set(h,'markersize', 25);
-        set(h, 'color', 'w');
+        %         h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
+        %         ...maximum value in each radial bin
+        %             set(h,'markersize', 25);
+        %         set(h, 'color', 'w');
         
         labels(species, property, day) %Adds labels of species, property, and day.
         %drawnow
@@ -161,7 +161,7 @@ for day = specified_day
     
     frame = getframe(hFig); %Grabs current frame
     [G,map] = frame2im(frame); %Converts frame to image
-    image_file = strcat(strtpath,'../output_plots/images/',species,'_',property,'/',leading_zero,num2str(day),'.jpg');
+    image_file = strcat(strtpath,'/../output_plots/images/',species,'_',property,'/',leading_zero,num2str(day),'.jpg');
     imwrite(G,image_file); %Saves image as a .jpg
     writeVideo(writerObj, frame); %Writes frame to avi
     species = species_save; %Resets species name (May not be needed).
@@ -174,4 +174,5 @@ close(writerObj); %Closes video writing
 hold off
 image_folder = strcat(strtpath, '../output_plots/images/',species,'_',property,'/');
 slider_plot(image_folder);
+addpath(genpath(strcat(fpath,'../')));
 end
