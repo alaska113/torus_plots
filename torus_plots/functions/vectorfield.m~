@@ -8,7 +8,8 @@ v_mag = zeros((lng+1)*rad, 1);
 rad_velocity = reshape(rad_velocity, (lng+1)*rad, 1);
 vaz_vel = reshape(vaz_vel, (lng+1)*rad, 1);
 fid = fopen(strcat(strtpath,'/debug.f90'));
-debug_script = fread(fid,[384,inf],'uint8=>char');
+debug_script = fread(fidc = fread(fid, 5, 'uint8=>char')')
+fgdfhdgh
 for p = 1:((lng+1)*rad)
     %if 
         if vaz_vel(p) == 0

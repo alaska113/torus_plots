@@ -7,7 +7,7 @@ hFig = figure; %Opens blank Figure
 
 
 %%%%%%%%%%%ENTER PATH TO THE 2D MODEL FOLDER HERE%%%%%%%%%%%%%%%%
-strtpath = '/Users/khan113/36x24r/b/2D_Model-master';  %Your saved 2D_Model-master location
+strtpath = '/Users/khan113/peters_runs';  %Your saved 2D_Model-master location
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%ENTER PATH TO THIS TORUS PLOTS FOLDER HERE%%%%%%%%%%%%
@@ -21,9 +21,9 @@ property_save = property; %Saves property arguement
 
 
 %SIZE OF MODEL RUN
-%  lng = 36; %Number of longitudinal bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
-%  rad = 24; %Number of radial bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
-[lng,rad] = FindDimensions(strtpath);
+  lng = 36; %Number of longitudinal bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
+  rad = 24; %Number of radial bins. (This can be found in do and dimensions.f90),(Consider making this and arguement instead, or letting the program find it)
+%[lng,rad] = FindDimensions(strtpath);
 
 
 %Added Paths
@@ -73,12 +73,12 @@ for day = specified_day
     else
         species = species_save; %Grabs saved species
         property = property_save; %Grabs saved property
-        %s3pfile = dir(strcat(strtpath,'/plots/data/s3p/', property, '/', property, 's3p', '*_3D.dat'));
+        s3pfile = dir(strcat(strtpath,'/plots/data/s3p/', property, '/', property, 's3p', '*_3D.dat'));
         data = load(folder(day).name); %Loads current data file according to day
-        %data2 = load(s3pfile(day).name);
+        data2 = load(s3pfile(day).name);
         if n == 'norm'
-            %[norm_values] = normalize_values(data,data2,lng,rad); %Normalizes values on 0-1 scaleing
             [norm_values] = normalize_values(data,lng,rad); %Normalizes values on 0-1 scaleing
+            %[norm_values] = normalize_values(data,lng,rad); %Normalizes values on 0-1 scaleing
             value = norm_values; %Sets to normalized values
         else
             value = data(:,2); %Sets to non-normalized values
@@ -91,14 +91,18 @@ for day = specified_day
         
         [radial_max_data,nl2current,nl2currentradius] = max_data(data,nl2data,rad,lng,vec_on); %Finds maximum value for each radial bin
         ...and selects nl2 value for transport calculation
-            dimension = size(value); %Finds Matrix dimensions of value set
-        radial_dimension = dimension(1,1)/2;
+            dimension = size(value) %Finds Matrix dimensions of value set
+        radial_dimension = dimension(1,1)/2
         
         if vec_on == 1
             [rad_velocity, vaz_vel] = calculateTransport(nl2current, nl2currentradius, strtpath, rad, lng); %Calculates radial and azimuthal transport
         end
         
         [x,y,c] = pol2cart(theta, radius, value);
+        size(x);
+        radial_dimension;
+        size(y);
+        size(c);
         
         X = reshape(x,radial_dimension,2);
         Y = reshape(y,radial_dimension,2);
@@ -134,17 +138,17 @@ for day = specified_day
         hold on
         
         
-                h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
+                %h = polar((radial_max_data(:,1)*(pi/180))+pi/18,radial_max_data(:,3), '.'); %Overlays white points of
                 ...maximum value in each radial bin
-                    set(h,'markersize', 25);
-                set(h, 'color', 'w');
+                    %set(h,'markersize', 25);
+               % set(h, 'color', 'w');
         
         labels(species, property, day) %Adds labels of species, property, and day.
         %drawnow
         
         %Vector Field calculation
         if vec_on == 1
-            vectorfield(rad,lng,theta,radius,rad_velocity,vaz_vel, file); %Overlays a velocity vector field
+            vectorfield(rad,lng,theta,radius,rad_velocity,vaz_vel,strtpath); %Overlays a velocity vector field
             ...(This may need some working on).
         end
     
@@ -160,9 +164,10 @@ for day = specified_day
     end
     
     frame = getframe(hFig); %Grabs current frame
-    [G,map] = frame2im(frame); %Converts frame to image
+    [s3p_MIXR_day200,map] = frame2im(frame); %Converts frame to image
     image_file = strcat(strtpath,'/../output_plots/images/',species,'_',property,'/',leading_zero,num2str(day),'.jpg');
-    imwrite(G,image_file); %Saves image as a .jpg
+    print('s3p_MIXR_day200','-dpdf')
+%    imwrite(G,image_file); %Saves image as a .jpg
     writeVideo(writerObj, frame); %Writes frame to avi
     species = species_save; %Resets species name (May not be needed).
     
@@ -173,6 +178,8 @@ end
 close(writerObj); %Closes video writing
 hold off
 image_folder = strcat(strtpath, '/../output_plots/images/',species,'_',property,'/');
-slider_plot(image_folder);
+%slider_plot(image_folder);
 addpath(genpath(strcat(f_path,'/../')));
+
+
 end
